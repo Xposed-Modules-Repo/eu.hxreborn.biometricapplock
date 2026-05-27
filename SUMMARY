@@ -1,0 +1,1 @@
+Xposed module that intercepts app launches at the System Framework level. Activities are never created until you authenticate via fingerprint or face unlock.
