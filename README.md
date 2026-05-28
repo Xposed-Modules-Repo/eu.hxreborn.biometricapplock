@@ -12,7 +12,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Android-11%2B-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android 11+">
   <img src="https://img.shields.io/badge/libxposed-API_101-ff69b4?style=for-the-badge" alt="libxposed API 101">
-  <img src="https://img.shields.io/github/downloads/hxreborn/biometric-app-lock/total?style=for-the-badge&logo=github&label=Downloads" alt="Downloads">
+  <img src="https://img.shields.io/github/downloads/Xposed-Modules-Repo/eu.hxreborn.biometricapplock/total?style=for-the-badge&logo=github&label=Downloads" alt="Downloads">
 </p>
 
 > [!NOTE]
