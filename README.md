@@ -38,6 +38,21 @@ A reboot is required after install or update because framework hooks only load a
 3. Reboot
 4. Select apps to lock in the Apps tab
 
+## Prevent uninstall
+
+Toggle in Settings → Lock & privacy. While on, the module blocks every attempt to uninstall itself, including `adb uninstall` and `pm uninstall`, since it's enforced in the system framework.
+
+> [!IMPORTANT]
+> To remove the module with the toggle on:
+> 1. Turn it off in the app, then uninstall. No reboot needed.
+> 2. If for some reason you can't open the app to disable the toggle, either disable the module in your Xposed manager and reboot or boot to safe mode where Xposed is off and uninstall.
+
+## Reporting issues
+
+About → Links → Share logs exports the module's log lines as a text file and opens a share sheet. Reproduce the issue first, then share via [email](mailto:hxreborn@duck.com), [GitHub issue](https://github.com/hxreborn/biometric-app-lock/issues/new), or [Telegram](https://t.me/hxreb0rn).
+
+Root is required to read the LSPosed logs. If unavailable, the row is disabled. Only this module's own log lines are exported — no other data is gathered. Debug builds are the most useful for diagnosing issues.
+
 ## License
 
 [![GPL-3.0-only](https://img.shields.io/badge/LICENSE-GPL--3.0--only-%23A42E2B?style=for-the-badge&logo=gnu&logoColor=white&logoPosition=right)](https://github.com/hxreborn/biometric-app-lock/blob/main/LICENSE)
