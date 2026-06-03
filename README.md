@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Android-11%2B-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android 11+">
+  <img src="https://img.shields.io/badge/Android-13%2B-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android 13+">
   <img src="https://img.shields.io/badge/libxposed-API_101-ff69b4?style=for-the-badge" alt="libxposed API 101">
   <img src="https://img.shields.io/github/downloads/Xposed-Modules-Repo/eu.hxreborn.biometricapplock/total?style=for-the-badge&logo=github&label=Downloads" alt="Downloads">
 </p>
@@ -28,7 +28,7 @@ A reboot is required after install or update because framework hooks only load a
 
 ## Requirements
 
-- Android 11+ with an enrolled biometric
+- Android 13+ with an enrolled biometric
 - Xposed manager with libxposed API 101 support
 
 ## Install
@@ -40,18 +40,24 @@ A reboot is required after install or update because framework hooks only load a
 
 ## Prevent uninstall
 
-Toggle in Settings → Lock & privacy. While on, the module blocks every attempt to uninstall itself, including `adb uninstall` and `pm uninstall`, since it's enforced in the system framework.
+Toggle in Settings → Privacy & stealth. While on, the module blocks every attempt to uninstall itself, including `adb uninstall` and `pm uninstall`, since it's enforced in the system framework.
 
 > [!IMPORTANT]
 > To remove the module with the toggle on:
 > 1. Turn it off in the app, then uninstall. No reboot needed.
 > 2. If for some reason you can't open the app to disable the toggle, either disable the module in your Xposed manager and reboot or boot to safe mode where Xposed is off and uninstall.
 
+## Block screenshots
+
+Toggle it globally in Settings or per app in its detail screen. Changes apply immediately, no reboot or hot reload. While on, an unlocked locked app's screenshots, screen recording, and recents preview are blocked. The per-app setting overrides the global one, so an app can stay blocked with the global toggle off. It cannot beat modules that force FLAG_SECURE off, like Disable Flag Secure by aviraxp.
+
+After you turn the block off, that app's recents card can stay blank since the system cached it while the block was on. Swipe it off recents and reopen the app for a fresh preview.
+
 ## Reporting issues
 
-About → Links → Share logs exports the module's log lines as a text file and opens a share sheet. Reproduce the issue first, then share via [email](mailto:hxreborn@duck.com), [GitHub issue](https://github.com/hxreborn/biometric-app-lock/issues/new), or [Telegram](https://t.me/hxreb0rn).
+Settings → About → Export logs saves the module's log lines to a text file and opens a share sheet, so you can attach them to a [GitHub issue](https://github.com/hxreborn/biometric-app-lock/issues/new), send them by [email](mailto:hxreborn@duck.com), or share via [Telegram](https://t.me/hxreb0rn). Reproduce the issue first, then export.
 
-Root is required to read the LSPosed logs. If unavailable, the row is disabled. Only this module's own log lines are exported — no other data is gathered. Debug builds are the most useful for diagnosing issues.
+Reading the LSPosed logs needs root. Only this module's own log lines are exported, so they're safe to attach to a public issue. Debug builds help me most.
 
 ## License
 
