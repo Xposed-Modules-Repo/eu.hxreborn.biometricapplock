@@ -6,41 +6,49 @@
 </h1>
 
 <p align="center">
-  Xposed module that intercepts the launches of a user-defined list of apps at the System Framework level. Those activities are never created until you authenticate via fingerprint or face unlock.
+  Xposed module that locks apps you choose behind fingerprint or face unlock. It intercepts launches at the System Framework level, so a locked app's activities are never created until you authenticate.
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Android-13%2B-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android 13+">
   <img src="https://img.shields.io/badge/libxposed-API_101%2B-ff69b4?style=for-the-badge" alt="libxposed API 101+">
-  <img src="https://img.shields.io/github/downloads/Xposed-Modules-Repo/eu.hxreborn.biometricapplock/total?style=for-the-badge&logo=github&label=Downloads" alt="Downloads">
+  <img src="https://img.shields.io/github/downloads/Xposed-Modules-Repo/eu.hxreborn.biometricapplock/total?style=for-the-badge&logo=github&label=Downloads&cacheSeconds=600" alt="Downloads">
 </p>
 
-> [!NOTE]
-> Built for AOSP and Pixel. Other Android flavors may work if not heavily modified, such as One UI 8+, but others are untested. If you're on HyperOS, OxygenOS, ColorOS, etc. your device already includes a built-in app lock and you probably don't need this.
 
 ## About this module
 
-Stock Android never had a native per-app lock, and [Private Space](https://source.android.com/docs/security/features/private-space) (available since Android 15 Beta 2) is a secondary isolated profile where apps run as separate installs with their own data.
-
-This module intercepts activity launches at the system framework level before the target app starts. The Activity is never created until auth succeeds. Tapping a locked app from the recents screen is intercepted too.
+Stock Android has no native per-app lock. This module adds one. A locked app opens normally once you authenticate, including when you tap it from the recents screen.
 
 Enabling the module needs one reboot so it loads at boot. After that, if your framework supports hot reload, app updates apply with no reboot. If not, you still reboot after each update. Changing which apps are locked is always instant.
+
+## OEM face unlock support
+
+The standard Android `BiometricPrompt` hides OEM face unlock from third-party apps when only face biometrics are enrolled (no fingerprint). This module works around that limitation where it can:
+
+- **Samsung (One UI)**: No workaround. One UI face unlock stays out of reach of the standard prompt, so unlocking behaves exactly as it does on stock Android. The module only reads whether a face is enrolled, to report it on the hardware card.
+- **Xiaomi (HyperOS / MIUI)**: Communicates directly with `miui.face.FaceService` via raw Binder IPC while the system prompt is displayed. The front-camera face scanner activates in the background, and on a successful match the system prompt is dismissed and the app unlocks.
+
+No additional setup is needed — the module detects the device manufacturer and applies the correct strategy automatically.
+
+> [!NOTE]
+> Verified on stock AOSP, Pixel, and Xiaomi (HyperOS / MIUI). Samsung (One UI) gets no face-unlock workaround. **OxygenOS**, **ColorOS**, and other lightly-modified HyperOS derivatives already ship their own app-lock layer — if your ROM has a built-in app lock you probably don't need this module, and the two can conflict.
 
 ## Requirements
 
 - Android 13+ with an enrolled biometric
-- Xposed manager with libxposed API 101 or newer (102 enables hot reload)
+- An Xposed manager with libxposed API 101 support, such as Vector 2.1 or newer (API 102, from Vector 2.2, adds hot reload)
 
 ## Install
 
-1. Install APK from [Releases](../../releases)
-2. Enable module in your Xposed manager with System Framework scope
+1. Download the APK from [Releases](https://github.com/hxreborn/biometric-app-lock/releases)
+2. Install and enable the module in your Xposed manager with System Framework scope
 3. Reboot
 4. Select apps to lock in the Apps tab
 
 ## Prevent uninstall
 
-Toggle in Settings → Privacy & stealth. While on, the module blocks every attempt to uninstall itself, including `adb uninstall` and `pm uninstall`, since it's enforced in the system framework.
+Toggle in Settings → Privacy. While on, the module blocks every attempt to uninstall itself, including `adb uninstall` and `pm uninstall`, since it's enforced in the system framework.
 
 > [!IMPORTANT]
 > To remove the module with the toggle on:
@@ -57,7 +65,7 @@ After you turn the block off, that app's recents card can stay blank since the s
 
 Settings → About → Export logs saves the module's log lines to a text file and opens a share sheet, so you can attach them to a [GitHub issue](https://github.com/hxreborn/biometric-app-lock/issues/new), send them by [email](mailto:hxreborn@duck.com), or share via [Telegram](https://t.me/hxreb0rn). Reproduce the issue first, then export.
 
-Reading the LSPosed logs needs root. Only this module's own log lines are exported, so they're safe to attach to a public issue. Debug builds help me most.
+Reading the Xposed manager's logs needs root. Only this module's own log lines are exported, so they're safe to attach to a public issue. Debug builds help me most.
 
 ## License
 
